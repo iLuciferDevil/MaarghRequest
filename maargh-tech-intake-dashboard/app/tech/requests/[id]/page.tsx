@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/client'
 import { ArrowLeft, Save } from 'lucide-react'
 
 type Request = Record<string, any>
+const statusOptions=[['new','New'],['reviewing','Reviewing'],['planned','Planned'],['in_progress','In Progress'],['blocked','Blocked'],['done','Done'],['rejected','Rejected']]
 
 export default function RequestDetail(){
  const {id}=useParams<{id:string}>()
@@ -30,9 +31,16 @@ export default function RequestDetail(){
 
  async function save(){
   if(!item||!supabase)return
-  setBusy(true)
+  setBusy(true);setMessage('')
+  const {data:current}=await supabase.from('tech_requests').select('status').eq('id',id).single()
   const {error}=await supabase.from('tech_requests').update({priority:item.priority,status:item.status,assignee:item.assignee,desired_deadline:item.desired_deadline,internal_notes:item.internal_notes,resolution_notes:item.resolution_notes}).eq('id',id)
-  setMessage(error?'Could not save changes.':'Changes saved.')
+  if(error){setMessage('Could not save changes.');setBusy(false);return}
+  if(current?.status!==item.status){
+   try{
+    await fetch('https://cpggikitfurjujtjmbnv.supabase.co/functions/v1/create-tech-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'status_update',request_id:id,status:item.status})})
+   }catch{}
+  }
+  setMessage('Changes saved.')
   setBusy(false)
  }
 
@@ -46,8 +54,7 @@ export default function RequestDetail(){
  }
 
  if(!item)return <main className="center-state">Loading request…</main>
-
- const field=(label:string,key:string,type='text')=><label className="field"><span>{label}</span>{type==='textarea'?<textarea rows={4} value={item[key]??''} onChange={e=>setItem({...item,[key]:e.target.value})}/>:<input type={type} value={item[key]??''} onChange={e=>setItem({...item,[key]:e.target.value})}/>}</label>
+ const field=(label:string,key:string,type='text')=><label className="field"><span>{label}</span>{type==='textarea'?<textarea rows={4} value={item[key]??''} onChange={e=>setItem({...item,[key]:e.target.value})}/>:<input type={type} value={item[key]??''} onChange={e=>setItem({...item,[key]:e.target.value})}/></label>
 
  return <main className="detail-page">
   <Link href="/tech" className="back-link"><ArrowLeft size={15}/> Back to requests</Link>
@@ -55,7 +62,7 @@ export default function RequestDetail(){
   {message&&<p className="save-message">{message}</p>}
   <div className="detail-grid">
    <section className="panel detail-panel"><h2>Request details</h2><dl className="request-details"><dt>Type</dt><dd>{item.request_type}</dd><dt>Urgency</dt><dd>{item.urgency}</dd><dt>Description</dt><dd>{item.description}</dd><dt>Why needed</dt><dd>{item.why_needed||'—'}</dd><dt>Business impact</dt><dd>{item.business_impact}</dd><dt>Impact area</dt><dd>{item.impact_area||'—'}</dd><dt>Affected</dt><dd>{item.affected_area||'—'}</dd><dt>Expected outcome</dt><dd>{item.expected_outcome||'—'}</dd><dt>Dependencies</dt><dd>{item.dependencies||'—'}</dd><dt>Additional context</dt><dd>{item.additional_context||'—'}</dd><dt>Relevant URL</dt><dd>{item.relevant_url||'—'}</dd></dl></section>
-   <aside className="panel detail-panel"><h2>Manage request</h2><div className="detail-form"><label className="field"><span>Priority</span><select value={item.priority} onChange={e=>setItem({...item,priority:e.target.value})}>{['P0','P1','P2','P3'].map(x=><option key={x}>{x}</option>)}</select></label><label className="field"><span>Status</span><select value={item.status} onChange={e=>setItem({...item,status:e.target.value})}>{['New','Reviewing','Planned','In Progress','Blocked','Done','Rejected'].map(x=><option key={x}>{x}</option>)}</select></label>{field('Assignee','assignee')}{field('Deadline','desired_deadline','date')}{field('Internal notes','internal_notes','textarea')}{field('Resolution notes','resolution_notes','textarea')}</div><h2 className="activity-title">Activity & comments</h2><div className="comments">{activity.map(event=><div className="comment" key={event.id}><strong>{event.author_name}</strong><small>{new Date(event.created_at).toLocaleString()}</small><p>{event.body}</p></div>)}{!activity.length&&<p className="muted">No activity yet.</p>}</div><form className="comment-form" onSubmit={addComment}><textarea rows={3} placeholder="Add a comment" value={comment} onChange={e=>setComment(e.target.value)}/><button className="secondary-button">Add comment</button></form></aside>
+   <aside className="panel detail-panel"><h2>Manage request</h2><div className="detail-form"><label className="field"><span>Priority</span><select value={item.priority} onChange={e=>setItem({...item,priority:e.target.value})}>{['P0','P1','P2','P3'].map(x=><option key={x}>{x}</option>)}</select></label><label className="field"><span>Status</span><select value={item.status} onChange={e=>setItem({...item,status:e.target.value})}>{statusOptions.map(([value,label])=><option key={value} value={value}>{label}</option>)}</select></label>{field('Assignee','assignee')}{field('Deadline','desired_deadline','date')}{field('Internal notes','internal_notes','textarea')}{field('Resolution notes','resolution_notes','textarea')}</div><h2 className="activity-title">Activity & comments</h2><div className="comments">{activity.map(event=><div className="comment" key={event.id}><strong>{event.author_name}</strong><small>{new Date(event.created_at).toLocaleString()}</small><p>{event.body}</p></div>)}{!activity.length&&<p className="muted">No activity yet.</p>}</div><form className="comment-form" onSubmit={addComment}><textarea rows={3} placeholder="Add a comment" value={comment} onChange={e=>setComment(e.target.value)}/><button className="secondary-button">Add comment</button></form></aside>
   </div>
  </main>
 }
