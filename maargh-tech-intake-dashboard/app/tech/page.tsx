@@ -16,7 +16,7 @@ type Request = {
  created_at:string; updated_at:string; completed_at:string|null
 }
 
-const STATUS=[['all','All'],['new','New'],['reviewing','Reviewing'],['planned','Planned'],['in_progress','In Progress'],['blocked','Blocked'],['done','Done'],['rejected','Rejected']]
+const STATUS=[['all','All'],['new','New'],['reviewing','Reviewing'],['planned','Planned'],['in_progress','In Progress'],['blocked','Blocked'],['need_more_information','Need more information'],['done','Done'],['rejected','Rejected']]
 const PRIORITIES=['All','P0','P1','P2','P3']
 const TYPES=[['All','All'],['bug','Bug'],['feature','Feature'],['improvement','Improvement'],['data_reporting','Data / reporting'],['content_admin','Content / admin'],['other','Other']]
 const URGENCY=[['All','All'],['blocking','Blocking'],['high','High'],['normal','Normal'],['low','Low']]
