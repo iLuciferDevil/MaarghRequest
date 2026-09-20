@@ -29,9 +29,7 @@ export default function RequestDetail() {
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
 
-  useEffect(() => {
-    setSupabase(createClient())
-  }, [])
+  useEffect(() => { setSupabase(createClient()) }, [])
 
   useEffect(() => {
     if (!supabase) return
@@ -50,17 +48,14 @@ export default function RequestDetail() {
     setMessage('')
 
     const status = String(item.status || 'new').toLowerCase().replace(/ /g, '_')
-    const { error } = await supabase
-      .from('tech_requests')
-      .update({
-        priority: item.priority,
-        status,
-        assignee: item.assignee,
-        desired_deadline: item.desired_deadline || null,
-        internal_notes: item.internal_notes,
-        resolution_notes: item.resolution_notes,
-      })
-      .eq('id', id)
+    const { error } = await supabase.from('tech_requests').update({
+      priority: item.priority,
+      status,
+      assignee: item.assignee,
+      desired_deadline: item.desired_deadline || null,
+      internal_notes: item.internal_notes,
+      resolution_notes: item.resolution_notes,
+    }).eq('id', id)
 
     if (error) {
       setMessage('Could not save changes: ' + error.message)
@@ -78,7 +73,7 @@ export default function RequestDetail() {
         body: JSON.stringify({ action: 'status_update', request_id: id, status }),
       })
     } catch {
-      // Request update is already saved; email failure must not block it.
+      // The request update is already saved; email failure must not block it.
     }
 
     setBusy(false)
@@ -88,9 +83,11 @@ export default function RequestDetail() {
     e.preventDefault()
     if (!comment.trim() || !supabase) return
 
-    const { error } = await supabase
-      .from('tech_request_activity')
-      .insert({ request_id: id, author_name: 'Tech team', body: comment.trim() })
+    const { error } = await supabase.from('tech_request_activity').insert({
+      request_id: id,
+      author_name: 'Tech team',
+      body: comment.trim(),
+    })
 
     if (error) {
       setMessage('Could not add comment: ' + error.message)
@@ -98,19 +95,16 @@ export default function RequestDetail() {
     }
 
     setComment('')
-    const { data } = await supabase
-      .from('tech_request_activity')
-      .select('*')
-      .eq('request_id', id)
-      .order('created_at', { ascending: false })
+    const { data } = await supabase.from('tech_request_activity')
+      .select('*').eq('request_id', id).order('created_at', { ascending: false })
     setActivity(data ?? [])
   }
 
   if (!item) return <main className="center-state">Loading request…</main>
 
-  const field = (label: string, key: string, type = 'text') => (
+  const field = (label: string, key: string, type = 'text', hint?: string) => (
     <label className="field">
-      <span>{label}</span>
+      <span>{label}{hint && <small className="field-hint">{hint}</small>}</span>
       {type === 'textarea' ? (
         <textarea rows={4} value={item[key] ?? ''} onChange={(e) => setItem({ ...item, [key]: e.target.value })} />
       ) : (
@@ -173,7 +167,7 @@ export default function RequestDetail() {
             {field('Assignee', 'assignee')}
             {field('Deadline', 'desired_deadline', 'date')}
             {field('Internal notes', 'internal_notes', 'textarea')}
-            {field('Resolution notes', 'resolution_notes', 'textarea')}
+            {field('Resolution notes', 'resolution_notes', 'textarea', 'Optional, including when closing as Done or Rejected')}
           </div>
 
           <h2 className="activity-title">Activity & comments</h2>
