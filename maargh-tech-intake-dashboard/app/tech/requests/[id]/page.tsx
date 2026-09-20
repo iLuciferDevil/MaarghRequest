@@ -16,6 +16,7 @@ const STATUS_OPTIONS = [
   ['planned', 'Planned'],
   ['in_progress', 'In Progress'],
   ['blocked', 'Blocked'],
+  ['need_more_information', 'Need more information'],
   ['done', 'Done'],
   ['rejected', 'Rejected'],
 ]
@@ -55,6 +56,7 @@ export default function RequestDetail() {
       desired_deadline: item.desired_deadline || null,
       internal_notes: item.internal_notes,
       resolution_notes: item.resolution_notes,
+      notes: item.notes,
     }).eq('id', id)
 
     if (error) {
@@ -167,6 +169,7 @@ export default function RequestDetail() {
             {field('Assignee', 'assignee')}
             {field('Deadline', 'desired_deadline', 'date')}
             {field('Internal notes', 'internal_notes', 'textarea')}
+            {field('Notes', 'notes', 'textarea', 'Used for requests needing more information; included in the status email')}
             {field('Resolution notes', 'resolution_notes', 'textarea', 'Optional, including when closing as Done or Rejected')}
           </div>
 
