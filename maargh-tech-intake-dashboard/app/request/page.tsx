@@ -7,7 +7,38 @@ export default function RequestPage(){
  const [form,setForm]=useState(initialForm),[submitted,setSubmitted]=useState<string|null>(null),[error,setError]=useState<string|null>(null),[busy,setBusy]=useState(false),[confirmed,setConfirmed]=useState(false)
  const update=(key:keyof typeof initialForm,value:string)=>setForm(v=>({...v,[key]:value}))
  async function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();if(!confirmed){setError('Please confirm that the information provided is accurate.');return}setBusy(true);setError(null);try{const payload={...form,desired_deadline:form.desired_deadline?form.desired_deadline.slice(0,10):'',attachments:[]};const r=await fetch('https://cpggikitfurjujtjmbnv.supabase.co/functions/v1/create-tech-request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const result=await r.json();if(!r.ok||result?.ok!==true)throw new Error(result?.error||`Request failed (${r.status})`);setSubmitted(`MRG-${result.request.request_code}`);setForm(initialForm);setConfirmed(false)}catch(e){setError(e instanceof Error?e.message:'Request submission failed')}finally{setBusy(false)}}
- if(submitted)return <main className="tiger-request-page"><div className="tiger-success"><div className="tiger-success-mark"><Check size={28}/></div><span className="gold-kicker">REQUEST RECEIVED</span><h1>Your request is in the queue.</h1><p>The Technology team has received your request.</p><strong>{submitted}</strong><Link className="tiger-button" href="/request">Submit another request <Send size={15}/></Link></div></main>
+ if(submitted)return <main className="tiger-request-page"><style jsx global>{`
+.tiger-request-page{min-height:100vh;background:#090706;color:#f4ead8}
+.tiger-scene{position:relative;min-height:100vh;display:block;overflow:hidden;background:#090706}
+.tiger-visual{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(8,6,4,.02) 0%,rgba(8,6,4,.05) 45%,rgba(8,6,4,.88) 78%,#090706 100%),url('/tiger-bg.webp');background-size:cover;background-position:center;transform:scaleX(-1)}
+.tiger-form-shell{position:relative;z-index:2;width:59%;min-height:100vh;margin-left:auto;padding:48px 5vw 52px 4vw;display:flex;align-items:flex-start;background:linear-gradient(90deg,rgba(9,7,5,.62),rgba(9,7,5,.91) 18%,rgba(9,7,5,.96));border-left:1px solid rgba(214,164,73,.16);backdrop-filter:blur(2px)}
+.tiger-form-inner{width:min(720px,100%);margin:auto 0}
+.tiger-heading{margin-bottom:30px}
+.tiger-heading h1{margin:0;color:#efc66d;font-family:Georgia,'Times New Roman',serif;font-size:clamp(38px,3.2vw,56px);font-weight:500;letter-spacing:.6px}
+.heading-rule{width:55px;height:3px;background:#efb33e;margin-top:18px;box-shadow:0 0 14px rgba(239,179,62,.3)}
+.tiger-form{gap:14px}
+.tiger-section{margin-top:5px;padding:8px 0 9px;border-bottom:1px solid #49351e}
+.tiger-section h2{margin:0;color:#dcae58;font-size:18px;letter-spacing:.4px;text-transform:none;font-weight:500}
+.section-number{color:#a8792d}
+.tiger-grid{gap:12px}
+.tiger-field{gap:6px}
+.tiger-field>span{color:#eee2cf;font-size:11px}
+.tiger-field>span svg{color:#dcae58}
+.tiger-field b{color:#e9ad3b}
+.tiger-field input,.tiger-field textarea,.tiger-field select{border:1px solid #5a5a5b;border-radius:7px;background:linear-gradient(180deg,#252629,#1d1e21);color:#f5eee2;padding:11px 12px;font-size:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.03)}
+.tiger-field textarea{min-height:76px}
+.tiger-field input::placeholder,.tiger-field textarea::placeholder{color:#929397}
+.tiger-field input:focus,.tiger-field textarea:focus,.tiger-field select:focus{border-color:#d9a23c;box-shadow:0 0 0 2px rgba(217,162,60,.14)}
+.field-letter{font-size:17px;line-height:1;color:#dcae58}
+.requester-row{margin-top:2px}
+.tiger-upload{border:1px dashed #72562c;background:rgba(17,14,10,.72);padding:12px}
+.tiger-submit-row{padding-top:7px;align-items:center}
+.tiger-confirm{display:flex;align-items:center;gap:9px;color:#d1c7b8;font-family:Arial,sans-serif;font-size:10px}
+.tiger-confirm input{accent-color:#e6a72f;width:17px;height:17px}
+.tiger-button{border-radius:7px;padding:12px 19px;background:linear-gradient(135deg,#e5a52e,#f5bb4b);border-color:#f0bd59;color:#1b1105}
+@media(max-width:1000px){.tiger-form-shell{width:64%;padding-left:4vw}}
+@media(max-width:760px){.tiger-scene{display:flex;flex-direction:column}.tiger-visual{position:relative;min-height:48vh;background-position:center;transform:scaleX(-1)}.tiger-form-shell{width:100%;min-height:auto;margin:0;padding:34px 20px 42px;background:linear-gradient(180deg,#0b0806,#0d0906)}.tiger-grid.two{grid-template-columns:1fr}.tiger-heading h1{font-size:40px}.tiger-submit-row{align-items:flex-start;flex-direction:column}.tiger-button{width:100%}}
+`}</style><div className="tiger-success"><div className="tiger-success-mark"><Check size={28}/></div><span className="gold-kicker">REQUEST RECEIVED</span><h1>Your request is in the queue.</h1><p>The Technology team has received your request.</p><strong>{submitted}</strong><Link className="tiger-button" href="/request">Submit another request <Send size={15}/></Link></div></main>
  return <main className="tiger-request-page"><div className="tiger-scene"><div className="tiger-visual" aria-hidden="true"/><section className="tiger-form-shell"><div className="tiger-form-inner">
   <div className="tiger-heading"><h1>TECH REQUEST</h1><div className="heading-rule"/></div>
   <form onSubmit={submit} className="tiger-form">
