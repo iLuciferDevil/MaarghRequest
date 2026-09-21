@@ -1,65 +1,56 @@
-/* ── Request page: full-bleed tiger with floating card ── */
+/* ── Request page: reference layout ── */
 .rq-page {
   position: relative;
   min-height: 100vh;
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 40px 20px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 32px 4vw;
   font-family: Arial, Helvetica, sans-serif;
   color: #f0e6d2;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 .rq-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
-  background: url('/tiger-bg.jpg') center center / cover no-repeat;
-}
-@supports (background-size: contain) {
-  /* On wide screens, avoid over-cropping: show the full image height */
-  @media (min-aspect-ratio: 16/10) {
-    .rq-bg {
-      background-size: 100% auto;
-      background-position: center bottom;
-    }
-  }
+  background: url('/tiger-bg.jpg') left center / cover no-repeat;
 }
 .rq-bg::after {
   content: '';
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(ellipse at 50% 50%, rgba(0,0,0,.35) 0%, rgba(0,0,0,.15) 60%, transparent 100%);
+    linear-gradient(90deg, rgba(0,0,0,.04) 0%, rgba(0,0,0,.12) 38%, rgba(0,0,0,.42) 62%, rgba(0,0,0,.55) 100%);
 }
 
-/* ── Floating card ── */
+/* Right-side floating intake panel */
 .rq-card {
   position: relative;
   z-index: 1;
-  width: min(620px, 100%);
-  border: 1.5px solid rgba(214, 164, 73, .45);
+  width: min(700px, 56vw);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  border: 2px solid rgba(214,164,73,.72);
   border-radius: 18px;
-  background: rgba(10, 8, 5, .82);
-  backdrop-filter: blur(24px) saturate(1.2);
-  -webkit-backdrop-filter: blur(24px) saturate(1.2);
-  padding: 36px 32px 32px;
-  box-shadow: 0 30px 80px rgba(0,0,0,.5), 0 0 0 1px rgba(214,164,73,.1);
+  background: rgba(8,7,5,.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 34px 34px 30px;
+  box-shadow: 0 24px 70px rgba(0,0,0,.55), 0 0 45px rgba(214,164,73,.08);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(214,164,73,.45) transparent;
 }
-
-/* ── Form layout ── */
 .rq-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 19px;
 }
 .rq-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 18px;
 }
-
-/* ── Field ── */
 .rq-field {
   display: flex;
   flex-direction: column;
@@ -68,12 +59,10 @@
 .rq-label {
   font-size: 13px;
   font-weight: 700;
-  color: #d8cfc0;
-  letter-spacing: .2px;
+  color: #eee5d5;
+  letter-spacing: .15px;
 }
-.rq-label b {
-  color: #e5a93a;
-}
+.rq-label b { color: #e5a13b; }
 .rq-input-wrap {
   position: relative;
   display: flex;
@@ -81,27 +70,27 @@
 }
 .rq-icon {
   position: absolute;
-  left: 12px;
-  top: 12px;
-  color: #d6a449;
+  left: 14px;
+  top: 13px;
+  color: #f0b43f;
   pointer-events: none;
   display: grid;
   place-items: center;
+  z-index: 2;
 }
 .rq-input-wrap input,
 .rq-input-wrap textarea,
 .rq-input-wrap select {
   width: 100%;
-  border: 1px solid rgba(255,255,255,.12);
-  border-radius: 10px;
-  background: rgba(20, 18, 14, .7);
-  color: #f2ead8;
-  padding: 12px 14px 12px 42px;
+  border: 1px solid rgba(145,150,160,.62);
+  border-radius: 9px;
+  background: rgba(36,38,43,.82);
+  color: #f4f1ea;
+  padding: 13px 14px 13px 48px;
   font-size: 13px;
   outline: none;
-  transition: border-color .2s, box-shadow .2s;
+  transition: border-color .2s, box-shadow .2s, background .2s;
 }
-/* fields without an icon get normal padding */
 .rq-field:not(:has(.rq-icon)) .rq-input-wrap input,
 .rq-field:not(:has(.rq-icon)) .rq-input-wrap textarea,
 .rq-field:not(:has(.rq-icon)) .rq-input-wrap select {
@@ -109,105 +98,130 @@
 }
 .rq-input-wrap textarea {
   resize: vertical;
-  min-height: 72px;
+  min-height: 78px;
 }
 .rq-input-wrap input::placeholder,
 .rq-input-wrap textarea::placeholder {
-  color: #807a6e;
+  color: #a0a2a8;
 }
 .rq-input-wrap input:focus,
 .rq-input-wrap textarea:focus,
 .rq-input-wrap select:focus {
-  border-color: #d6a449;
-  box-shadow: 0 0 0 3px rgba(214,164,73,.12);
+  border-color: #e0a942;
+  box-shadow: 0 0 0 3px rgba(224,169,66,.14);
+  background: rgba(39,41,46,.94);
 }
 .rq-input-wrap select option {
-  background: #1a1611;
-  color: #f2ead8;
+  background: #1c1d20;
+  color: #f4f1ea;
 }
 
-/* ── File upload ── */
+/* Attachment */
 .rq-upload {
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 1px dashed rgba(214,164,73,.35);
-  border-radius: 10px;
+  border: 1px dashed rgba(214,164,73,.48);
+  border-radius: 9px;
   padding: 14px;
-  color: #b8ad9a;
+  color: #c6c1b8;
   font-size: 12px;
-  background: rgba(16,13,9,.5);
+  background: rgba(16,14,10,.58);
   cursor: pointer;
 }
-.rq-upload svg { color: #d6a449; }
+.rq-upload svg { color: #f0b43f; }
 .rq-upload span { display: flex; flex-direction: column; gap: 3px; }
-.rq-upload small { color: #746c62; }
-.rq-upload input[type="file"] { margin-left: auto; max-width: 210px; color: #9f968a; font-size: 11px; }
+.rq-upload small { color: #817b72; }
+.rq-upload input[type="file"] {
+  margin-left: auto;
+  max-width: 230px;
+  color: #bdb8ae;
+  font-size: 11px;
+}
 
-/* ── Error ── */
+/* Errors */
 .rq-error {
   margin: 0;
-  color: #ef9a7e;
+  color: #ff9b7f;
   font-size: 13px;
 }
 
-/* ── Footer: confirm + submit ── */
+/* Footer */
 .rq-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  padding-top: 4px;
+  gap: 18px;
+  padding-top: 2px;
 }
 .rq-confirm {
   display: flex;
   align-items: center;
-  gap: 10px;
-  color: #c4bba9;
+  gap: 9px;
+  color: #ddd6ca;
   font-size: 12px;
   cursor: pointer;
 }
 .rq-confirm input[type="checkbox"] {
-  accent-color: #d6a449;
+  appearance: none;
   width: 18px;
   height: 18px;
+  border: 1px solid #d9a33b;
+  border-radius: 3px;
+  background: transparent;
   cursor: pointer;
+  position: relative;
+  flex: 0 0 auto;
+}
+.rq-confirm input[type="checkbox"]:checked {
+  background: #f0b43f;
+  border-color: #f0b43f;
+}
+.rq-confirm input[type="checkbox"]:checked::after {
+  content: '✓';
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #191307;
+  font-weight: 900;
+  font-size: 13px;
 }
 .rq-submit-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  border: 1px solid #e2ad4c;
-  border-radius: 10px;
+  gap: 11px;
+  border: 1px solid #f0b43f;
+  border-radius: 9px;
   padding: 14px 28px;
-  background: linear-gradient(135deg, #c98d27, #f0b844);
+  background: linear-gradient(135deg,#e9a72e,#ffc04b);
   color: #1a1004;
   font-size: 14px;
   font-weight: 800;
-  letter-spacing: .2px;
+  letter-spacing: .1px;
   text-decoration: none;
-  box-shadow: 0 8px 30px rgba(201,141,39,.2);
+  box-shadow: 0 8px 28px rgba(201,141,39,.22);
   cursor: pointer;
   white-space: nowrap;
-  transition: filter .15s;
+  transition: filter .15s, transform .15s;
 }
-.rq-submit-btn:hover { filter: brightness(1.08); }
-.rq-submit-btn:disabled { opacity: .6; cursor: wait; }
+.rq-submit-btn:hover { filter: brightness(1.07); transform: translateY(-1px); }
+.rq-submit-btn:disabled { opacity: .6; cursor: wait; transform: none; }
 
-/* ── Success card ── */
+/* Success state */
 .rq-success-card {
   position: relative;
   z-index: 1;
-  width: min(560px, 100%);
+  width: min(620px, 56vw);
   text-align: center;
   padding: 60px 36px;
-  border: 1.5px solid rgba(214,164,73,.4);
+  border: 2px solid rgba(214,164,73,.65);
   border-radius: 18px;
-  background: rgba(10, 8, 5, .82);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  box-shadow: 0 30px 80px rgba(0,0,0,.5);
+  background: rgba(8,7,5,.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow: 0 30px 80px rgba(0,0,0,.55);
 }
 .rq-success-icon {
   width: 56px;
@@ -229,16 +243,12 @@
   margin-bottom: 8px;
 }
 .rq-success-card h1 {
-  font-size: clamp(28px, 4vw, 42px);
+  font-size: clamp(28px,4vw,42px);
   font-weight: 600;
   margin: 0 0 10px;
   color: #f5ead7;
 }
-.rq-success-card p {
-  color: #968b7e;
-  font-size: 14px;
-  margin: 0;
-}
+.rq-success-card p { color: #968b7e; font-size: 14px; margin: 0; }
 .rq-code {
   display: block;
   color: #e1b15a;
@@ -246,18 +256,29 @@
   letter-spacing: 1.5px;
   margin: 22px 0;
 }
-.rq-success-card .rq-submit-btn {
-  margin-top: 6px;
-}
+.rq-success-card .rq-submit-btn { margin-top: 6px; }
 
-/* ── Responsive ── */
+@media (max-width: 1050px) {
+  .rq-page {
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px 16px;
+    overflow-y: auto;
+  }
+  .rq-card {
+    width: min(720px, 100%);
+    max-height: none;
+  }
+  .rq-bg {
+    background-position: 25% center;
+  }
+}
 @media (max-width: 680px) {
-  .rq-page { padding: 24px 12px; }
-  .rq-card { padding: 28px 18px 24px; }
+  .rq-card { padding: 26px 18px 24px; }
   .rq-row { grid-template-columns: 1fr; }
   .rq-footer { flex-direction: column; align-items: stretch; }
   .rq-submit-btn { width: 100%; }
-  .rq-success-card { padding: 40px 20px; }
+  .rq-success-card { width: 100%; padding: 40px 20px; }
 }
 @import 'tailwindcss';
 
