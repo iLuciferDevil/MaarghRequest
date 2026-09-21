@@ -321,3 +321,116 @@ button { cursor: pointer; }
 
 /* Tech reporting additions */
 .report-panel,.status-panel{margin-bottom:18px}.report-actions,.heading-actions,.modal-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.status-tabs{display:grid;grid-template-columns:repeat(8,1fr);gap:8px}.status-tab{border:1px solid #e5e9f0;background:#fff;border-radius:9px;padding:11px 10px;text-align:left;color:#657286;display:flex;justify-content:space-between;gap:8px;font-size:10px}.status-tab strong{color:#172033}.status-tab.active{border-color:#b9c7f6;background:#edf1ff;color:#4269e1}.status-tab.active strong{color:#4269e1}.filter-date{display:flex;flex-direction:column;gap:4px;color:#8a94a7;font-size:8px}.filter-date input{min-height:40px}.summary-modal{width:min(820px,100%);max-height:calc(100vh - 40px);overflow:auto;background:#fff;border-radius:16px;padding:24px;box-shadow:0 20px 60px #17202f40}.summary-modal h2{margin:0;font-size:22px}.summary-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.summary-copy{background:#f7f8fb;border:1px solid #e7eaf0;border-radius:10px;padding:18px;line-height:1.65;color:#526074;font-size:12px}.summary-copy p{margin:0 0 12px}.summary-copy p:last-child{margin-bottom:0}.summary-note{display:flex;gap:7px;align-items:flex-start;color:#8994a5;font-size:9px;margin:14px 0 0}.icon-button{border:0;background:transparent;cursor:pointer}.modal-actions{justify-content:flex-end;margin-top:16px}.report-panel .panel-heading{align-items:center}@media(max-width:900px){.status-tabs{grid-template-columns:repeat(4,1fr)}}@media(max-width:620px){.status-tabs{grid-template-columns:repeat(2,1fr)}.summary-stats{grid-template-columns:repeat(2,1fr)}.report-actions,.heading-actions{width:100%}.report-actions button,.heading-actions button,.heading-actions a{flex:1}.filter-date{width:100%}}
+
+/* ── Home page: Maargh Tech workspace theme ── */
+.rq-home {
+  justify-content: flex-end;
+  align-items: center;
+  padding: 28px 4vw 28px 28px;
+}
+.rq-home .rq-bg {
+  background: #17110b;
+}
+.rq-home .rq-bg::before {
+  background: url('/tiger-bg.jpg') left center / auto 100% no-repeat;
+}
+.rq-home .rq-bg::after {
+  background:
+    linear-gradient(90deg, transparent 0%, rgba(0,0,0,.03) 35%, rgba(0,0,0,.55) 62%, rgba(0,0,0,.78) 100%),
+    linear-gradient(180deg, rgba(0,0,0,.05), rgba(0,0,0,.2));
+}
+.rq-home-card {
+  width: min(560px, 46vw);
+  max-height: none;
+  overflow: visible;
+  padding: 36px 36px 34px;
+}
+.rq-home-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  color: #f5ead7;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -.2px;
+}
+.rq-home-mark {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #172033;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+.rq-home-dot { color: #e5a13b; }
+.rq-home-card .rq-kicker {
+  margin-bottom: 14px;
+}
+.rq-home-card h1 {
+  margin: 0 0 16px;
+  color: #f7eddb;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.04;
+  font-weight: 600;
+  letter-spacing: -1.8px;
+}
+.rq-home-lead {
+  max-width: 470px;
+  margin: 0;
+  color: #b9ad9d;
+  font-size: 14px;
+  line-height: 1.65;
+}
+.rq-home-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 28px;
+}
+.rq-home-actions .rq-submit-btn {
+  padding: 12px 20px;
+  font-size: 13px;
+}
+.rq-home-actions .rq-submit-btn span {
+  font-size: 17px;
+  line-height: 1;
+}
+.rq-home-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(214,164,73,.34);
+  border-radius: 9px;
+  padding: 11px 16px;
+  background: rgba(10,9,7,.45);
+  color: #d5cbbb;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color .15s, background .15s, color .15s;
+}
+.rq-home-secondary:hover {
+  border-color: rgba(214,164,73,.7);
+  background: rgba(20,17,12,.72);
+  color: #f5ead7;
+}
+@media (max-width: 1050px) {
+  .rq-home {
+    justify-content: center;
+    padding: 24px 16px;
+  }
+  .rq-home-card {
+    width: min(680px, 100%);
+  }
+}
+@media (max-width: 680px) {
+  .rq-home-card { padding: 28px 22px 24px; }
+  .rq-home-card h1 { font-size: 36px; }
+  .rq-home-actions { flex-direction: column; align-items: stretch; }
+  .rq-home-actions .rq-submit-btn,
+  .rq-home-secondary { width: 100%; }
+}
