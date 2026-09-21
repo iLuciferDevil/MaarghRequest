@@ -10,7 +10,7 @@ export default function RequestPage(){
  if(submitted)return <main className="tiger-request-page"><style jsx global>{`
 .tiger-request-page{min-height:100vh;background:#090706;color:#f4ead8}
 .tiger-scene{position:relative;min-height:100vh;display:block;overflow:hidden;background:#090706}
-.tiger-visual{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(8,6,4,.02) 0%,rgba(8,6,4,.05) 45%,rgba(8,6,4,.88) 78%,#090706 100%),url('/tiger-bg.webp');background-size:cover;background-position:center;transform:scaleX(-1)}
+.tiger-visual{position:absolute;inset:0;background-image:linear-gradient(90deg,rgba(8,6,4,.02) 0%,rgba(8,6,4,.05) 45%,rgba(8,6,4,.88) 78%,#090706 100%),url('/ChatGPT%20Image%20Sep%2021,%202026,%2006_16_56%20PM.png');background-size:cover;background-position:center;transform:scaleX(-1)}
 .tiger-form-shell{position:relative;z-index:2;width:59%;min-height:100vh;margin-left:auto;padding:48px 5vw 52px 4vw;display:flex;align-items:flex-start;background:linear-gradient(90deg,rgba(9,7,5,.62),rgba(9,7,5,.91) 18%,rgba(9,7,5,.96));border-left:1px solid rgba(214,164,73,.16);backdrop-filter:blur(2px)}
 .tiger-form-inner{width:min(720px,100%);margin:auto 0}
 .tiger-heading{margin-bottom:30px}
